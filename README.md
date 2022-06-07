@@ -7,7 +7,7 @@ This library is using typescript.
 ### Installation
 
 ```bash
-npm i -D svelte-date-picker
+npm i -D @kuanyu0729/svelte-date-picker
 ```
 
 ## Usage

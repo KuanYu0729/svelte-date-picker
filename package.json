@@ -1,6 +1,5 @@
 {
-  "name": "svelte-date-picker",
-  "private": true,
+  "name": "@kuanyu0729/svelte-date-picker",
   "svelte": "src/index.ts",
   "version": "0.0.0",
   "type": "module",
