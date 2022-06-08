@@ -3,6 +3,8 @@
 	import { createEventDispatcher } from "svelte";
 	const date = new Date();
 	const dispatch = createEventDispatcher();
+	let className: string = "";
+	export {className as class};
 
 	interface ActiveDate {
 		year?: number;
@@ -89,7 +91,7 @@
 	}
 </script>
 
-<div class="calendar">
+<div class="calendar {className}">
 	<div class="tool-bar">
 		<span class="arrow-button" on:click={goToPrev}>
 			<svg width="24px" height="24px">
