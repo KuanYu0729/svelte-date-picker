@@ -219,26 +219,33 @@
 				justify-content: center;
 				align-items: center;
 				.cell {
+					background: #eee;
 					display: flex;
 					flex-flow: row;
 					justify-content: center;
 					align-items: center;
 					flex: 1;
 					height: 57px;
+					color: #000000;
 					&.active {
 						background: var(--secondary-background, #1b2727);
 						color: white;
 					}
+					&.days {
+						.weekdays {
+							background-color: #c7c7c7;
+							font-weight: 500;
+							color: #fff;
+						}
+					}
 				}
 			}
 		}
-
-		.days {
-			background: #eee;
-			.weekdays {
-				background-color: #c7c7c7;
-				font-weight: 500;
-				color: #fff;
+	}
+	:global(.theme--dark) {
+		.calendar {
+			.tool-bar {
+				color: #ffffff;
 			}
 		}
 	}
