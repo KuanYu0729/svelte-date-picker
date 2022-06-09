@@ -1,11 +1,14 @@
 <script lang="ts">
   import Calendar from "./Calendar.svelte";
+  let date = new Date();
+  $: {
+    console.log(date);
+  }
 </script>
 
 <main>
-  <Calendar on:SelectedDate={event => {
-    console.log(event.detail);
-  }}/>
+  <Calendar bind:date />
+  <span>{date.toLocaleString()}</span>
 </main>
 
 <style>
@@ -19,5 +22,4 @@
     padding: 1em;
     margin: 0 auto;
   }
-
 </style>

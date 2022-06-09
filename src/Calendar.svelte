@@ -1,23 +1,10 @@
 <script lang="ts">
 	import { mdiChevronLeft, mdiChevronRight } from "@mdi/js";
 	import { createEventDispatcher } from "svelte";
-	const date = new Date();
+	export let date: Date = new Date();
 	const dispatch = createEventDispatcher();
 	let className: string = "";
-	export {className as class};
-
-	interface ActiveDate {
-		year?: number;
-		month?: number;
-		dayNumber?: number;
-	}
-	let today = new Date();
-
-	const activeDate: ActiveDate = {
-		dayNumber: today.getDate(),
-		month: today.getMonth(),
-		year: today.getFullYear(),
-	};
+	export { className as class };
 
 	const monthNames = [
 		"一月",
@@ -33,19 +20,30 @@
 		"十一月",
 		"十二月",
 	];
+
 	let monthIndex = date.getMonth();
 	$: month = monthNames[monthIndex];
 
 	let year = date.getFullYear();
 
+	/**
+	 * First day of this month
+	 */
 	$: firstDayIndex = new Date(year, monthIndex, 1).getDay();
+
+	/**
+	 * Days of this month
+	 */
 	$: numberOfDays = new Date(year, monthIndex + 1, 0).getDate();
 
-	$: calendarCellsQty = 42;
+	/**
+	 * Calendar cells count
+	 */
+	const calendarCellsQty = 42;
 	let isEditYear = false;
 
 	let yearList = [];
-	let startYear = parseInt((activeDate.year / 20).toString()) * 20;
+	let startYear = Math.floor(date.getFullYear() / 20) * 20;
 	function updateYearList() {
 		let temp: number[] = [];
 		for (let i = 0; i < 20; i += 1) {
@@ -80,15 +78,6 @@
 			monthIndex -= 1;
 		}
 	};
-
-	function onSelectedDate(date: number) {
-		activeDate.month = monthIndex;
-		activeDate.year = year;
-		activeDate.dayNumber = date;
-		let selectedDate = new Date();
-		selectedDate.setFullYear(year, monthIndex, date);
-		dispatch("SelectedDate", selectedDate);
-	}
 </script>
 
 <div class="calendar {className}">
@@ -122,10 +111,11 @@
 					{#each Array(4) as _, j}
 						<span
 							class="cell"
-							class:active={activeDate.year ===
+							class:active={date.getFullYear() ===
 								yearList[i * 4 + j]}
 							on:click={() => {
-								year = activeDate.year = yearList[i * 4 + j];
+								date.setFullYear(yearList[i * 4 + j]);
+								date = date;
 								isEditYear = false;
 							}}
 						>
@@ -153,18 +143,20 @@
 							<span class="cell"> &nbsp; </span>
 						{:else}
 							<span
-								class="cell valid"
-								class:active={i * 7 + j - firstDayIndex + 1 ===
-									activeDate.dayNumber &&
-									monthIndex === activeDate.month &&
-									year === activeDate.year}
-								data-dateID={`${month}_${
-									i * 7 + j - firstDayIndex + 1
-								}_${year}`}
+								class="cell valid {i * 7 +
+									j -
+									firstDayIndex +
+									1 ===
+									date.getDate() &&
+								monthIndex === date.getMonth() &&
+								year === date.getFullYear()
+									? 'active'
+									: ''}"
 								on:click={() => {
-									onSelectedDate(
-										i * 7 + j - firstDayIndex + 1
-									);
+									date.setMonth(monthIndex);
+									date.setDate(i * 7 + j - firstDayIndex + 1);
+									dispatch("SelectedDate", date);
+									date = date;
 								}}
 							>
 								{i * 7 + j - firstDayIndex + 1}
